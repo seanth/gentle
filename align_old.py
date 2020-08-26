@@ -15,9 +15,6 @@ parser.add_argument(
         '-o', '--output', metavar='output', type=str, 
         help='output filename')
 parser.add_argument(
-        '-c', '--csv', dest='outputCSV', action='store_true', 
-        help='Save file as csv?')
-parser.add_argument(
         '--conservative', dest='conservative', action='store_true',
         help='conservative alignment')
 parser.set_defaults(conservative=False)
@@ -58,9 +55,6 @@ with gentle.resampled(args.audiofile) as wavfile:
     result = aligner.transcribe(wavfile, progress_cb=on_progress, logging=logging)
 
 fh = open(args.output, 'w', encoding="utf-8") if args.output else sys.stdout
-if args.outputCSV == True:
-    fh.write(result.to_csv())
-else:
-    fh.write(result.to_json(indent=2))
+fh.write(result.to_json(indent=2))
 if args.output:
     logging.info("output written to %s" % (args.output))
